@@ -1,0 +1,58 @@
+{% extends "quiz/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<h6>Leader Board</h6>
+<form action="{% url 'home_view' %}" method="post" class="form-horizontal"> {% csrf_token %} 
+      {% if alert.success %}
+      <div class="alert alert-success alert_div" id="alert_div1" >
+         <button class="close" data-dismiss="alert"></button>
+            {{alert.success}}
+      </div>
+      {% endif %}
+      {% if alert.failed %}
+      <div class="alert alert-danger alert_div" id ="alert_div1">
+         <button class="close" data-dismiss="alert" ></button>
+         {{alert.failed}}
+      </div>
+      {% endif %}
+  <div class="control-group">
+      <label class="control-label">Abbreviation</label>
+      <div class="controls">
+         {{ form.short_name }}
+      </div>
+      <div class="controls">
+		{% if form.short_name.errors %}
+		<span><label class="error">{{form.short_name.errors.as_text}}</label></span> 
+		{% endif %}
+		</div>
+   </div>
+   <div class="control-group">
+      <label class="control-label">Target URL</label>
+      <div class="controls">
+         {{ form.url_to_redirect }}
+      </div>
+      <div class="controls">
+		{% if form.url_to_redirect.errors %}
+		<span><label class="error">{{form.url_to_redirect.errors.as_text}}</label></span> 
+		{% endif %}
+		</div>
+   </div>
+   <div class="control-group">
+      <label class="control-label">Email Id</label>
+      <div class="controls">
+         {{ form.email_id }}
+      </div>
+      <div class="controls">
+		{% if form.email_id.errors %}
+		<span><label class="error">{{form.email_id.errors.as_text}}</label></span> 
+		{% endif %}
+		</div>
+   </div>
+   <div class="control-group">
+   <div class="controls">
+   <button type="submit" class="btn btn-primary ">Create</button>
+   </div>
+   </div>
+</form>
+{% endblock %}
