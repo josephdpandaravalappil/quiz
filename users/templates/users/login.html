@@ -10,7 +10,11 @@
 			<div class="row" id="starts">
 				<div class="col-md-12 col-sm-12 col-xs-12 work-list">
 					<form class="form-signin"  method="post">{% csrf_token %}
-						<h2 class="text-center portfolio-text">Log In/Sign Up</h2>
+						<h4 class="text-center portfolio-text">Log In/Sign Up</h4>
+						<div class="alert alert-danger" id="fail">
+                          <button class="close" data-dismiss="alert"></button>
+                          {[{error}]}
+                      	</div>
 						<div class="col-md-4 col-sm-6 col-xs-12 work-space">
 							<input type="text" name="username" class="form-control" placeholder="Username" required autofocus ng-model="data.username">
 			                <input type="password" name="password" class="form-control" placeholder="Password" required ng-model="data.password"><br>
@@ -28,52 +32,72 @@
 							{% endif %} -->
 						</div>
 					</form>
-					<div class="vr">&nbsp;</div>
 					<form class="form-signup" method="post">{% csrf_token %}
 						<div class="col-md-8 col-sm-6 col-xs-12 work-space">
 							<div class="col-md-4 col-sm-6 col-xs-12 work-space">
 								<label>Name
 							</div>
 							<div class="col-md-8 col-sm-6 col-xs-12 work-space">
-								<input type="text" name="name" class="form-control" placeholder="Name" required >
+								<input type="text" name="name" class="form-control" placeholder="Name" required ng-model="signup_data.name">
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-12 work-space">
+								<label>
+								    <input type="radio" ng-model="user_type" value="0">
+								    Student
+								</label>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-12 work-space">
+								<label>
+								    <input type="radio" ng-model="user_type" value="1">
+								    Teacher
+								</label>
 							</div>
 							<div class="col-md-4 col-sm-6 col-xs-12 work-space">
-								<label>School
+								<label>City</label>
+		                        <select class="form-control" ng-model="selectedCity" 
+		                          ng-options="x.name for x in cities" ng-change="citySelected()">
+		                          <option value="">-- Select Your City --</option>
+		                        </select>
 							</div>
-							<div class="col-md-8 col-sm-6 col-xs-12 work-space">
-								<input type="text" name="school" class="form-control" placeholder="School" required >
-							</div>
+<!-- 							<div class="col-md-8 col-sm-6 col-xs-12 work-space">
+							</div> -->
 							<div class="col-md-4 col-sm-6 col-xs-12 work-space">
-								<label>Standard
+								<label>School</label>
+								<select class="form-control" ng-model="selectedSchool" 
+		                          ng-options="x.name for x in schools" ng-change="schoolSelected()">
+		                          <option value="">-- Select Your School --</option>
+		                        </select>
 							</div>
-							<div class="col-md-8 col-sm-6 col-xs-12 work-space">
-								<input type="text" name="standard" class="form-control" placeholder="standard" required >
-							</div>
+<!-- 							<div class="col-md-8 col-sm-6 col-xs-12 work-space">
+							</div> -->
 							<div class="col-md-4 col-sm-6 col-xs-12 work-space">
-								<label>City
+								<label>Standard</label>
+								<select class="form-control" ng-model="selectedStandard" 
+		                          ng-options="x.name for x in standards" >
+		                        <option value="">-- Select Your Standard --</option>
+		                        </select>
 							</div>
-							<div class="col-md-8 col-sm-6 col-xs-12 work-space">
-								<input type="text" name="city" class="form-control" placeholder="City" required >
-							</div>
+<!-- 							<div class="col-md-8 col-sm-6 col-xs-12 work-space">
+							</div> -->
 							<div class="col-md-4 col-sm-6 col-xs-12 work-space">
 								<label>Username
 							</div>
 							<div class="col-md-8 col-sm-6 col-xs-12 work-space">
-								<input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
+								<input type="text" name="username" class="form-control" placeholder="Username" required autofocus ng-model="signup_data.username">
 							</div>
 							<div class="col-md-4 col-sm-6 col-xs-12 work-space">
 								<label>Password
 							</div>
 							<div class="col-md-8 col-sm-6 col-xs-12 work-space">
-								<input type="password" name="password" class="form-control" placeholder="Password" required>
+								<input type="password" name="password" class="form-control" placeholder="Password" required ng-model="signup_data.password">
 							</div>
 							<input type="hidden" class="form-control" name="signup"/>
 			                <div class="col-md-12 col-sm-6 col-xs-12 work-space">
-			                	<button class="btn btn-lg  btn-block" type="submit">
-									<a href="#">
-				                		<h3>Sign Up</h3>
-				                	</a>
-				                </button>
+			                	<button class="btn btn-lg  btn-block" type="submit" ng-click="signup(signup_data)">
+								<a href="#">
+		                			<h3>Sign Up</h3>
+		                		</a>
+		                	</button>
 			                </div>
 						</div>
 					</form>

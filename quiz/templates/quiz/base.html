@@ -47,7 +47,19 @@
           <nav class="collapse navbar-collapse" id="myNavbar" role="navigation">
             <ul class="nav navbar-nav navbar-right menu">
                 <li><a href="{% url 'home_view' %}" class="page-scroll ">Home</a></li>
-                <li><a href="{% url 'login' %}" class="page-scroll">Login/Signup</a></li>
+                {% if user.is_authenticated %}
+                  <li>
+                    <a class="page-scroll" data-toggle="dropdown">{{user.username}}
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      
+                      <li><a href="#"> Profile</a></li>
+                      <li><a href="{% url 'logout' %}">Logout</a></li>
+                    </ul>
+                  </li>
+                {% else %}
+                  <li><a href="{% url 'login' %}" class="page-scroll">Login/Signup</a></li>
+                {% endif %}
             </ul>
           </nav>
         </div>

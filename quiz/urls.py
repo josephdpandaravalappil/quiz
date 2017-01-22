@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^$', HomeView.as_view(), name='home_view'),
 
     url(r'^users/', include('users.urls')),
+    url(r'^api/', include('api.urls')),
 ]
