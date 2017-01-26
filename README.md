@@ -1,4 +1,4 @@
-# quiz
+# Quiz
 
 
 Quiz.com is an online application which can be used to take onlie tests students in different countries.
