@@ -1,9 +1,9 @@
 # Quiz
 
 
-Quiz.com is an online application which can be used to take onlie tests students in different countries.
+Quiz.com is an online application which can be used to take onlie tests for students in different cities and schools.
 
-Deveoped using Python Django with Postgres Database
+Developed using Python Django with Postgres Database
 
 Features
 
