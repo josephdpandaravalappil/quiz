@@ -30,4 +30,7 @@ class CustomPagination(APIView):
         Return a paginated style `Response` object for the given output data.
         """
         assert self.paginator is not None
+        print "self.paginator",self.paginator
+        page = 1
+        page_size = 1000
         return self.paginator.get_paginated_response(data)

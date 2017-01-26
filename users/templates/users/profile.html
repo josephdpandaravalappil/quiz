@@ -1,0 +1,54 @@
+{% extends 'quiz/base.html' %}
+{% block head %}
+   {% load staticfiles %}
+{% endblock%}
+
+{% block body %}
+
+   <div class="container-fluid work" id="work" ng-controller="ProfileController">
+      <div class="container">
+         <h3><label><i class="fa fa-book"></i> Profile</label></h3>
+         <div class="row">
+           <div class="col-md-12">
+             <div class="grid simple">
+               <div class="grid-body no-border"><br>
+                 <div class="row">
+                   <label> My Tests </label>
+                   <div class="col-md-12 col-sm-12 col-xs-12">
+                     <div class="form-group">
+                       <table class="table" >
+                         <thead>
+                           <tr>
+                             <th class="text-center">Sl.No.</th>
+                             <th class="text-center">Test name</th>
+                             <th class="text-center">Held On</th>
+                             <th class="text-center">Attended On</th>
+                             <th class="text-center">Duration</th>
+                             <th class="text-center">Your Score</th>
+                           </tr>
+                         </thead>
+                         <tbody>
+                             <tr ng-repeat="x in quizes ">
+                               <td class="text-center">{[{ $index+1 }]}</td>
+                               <td class="text-center">{[{ x.quiz_details.name }]}</td>
+                               <td class="text-center">{[{ x.quiz_details.starts | date:'yyyy-MM-dd HH:mm:ss'}]}</td>
+                               <td class="text-center">{[{ x.created_on | date:'yyyy-MM-dd HH:mm:ss'}]}</td>
+                               <td class="text-center">{[{ x.quiz_details.duration}]}</td>
+                               <td class="text-center">{[{ x.score}]}</td>
+                             </tr>
+                             <tr ng-if="quizes.length==0">
+                               <td colspan="7">No tests attempted</td>
+                             </tr>
+                           </tbody>
+                       </table>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+     </div>
+      </div>
+   </div>
+{% endblock%}

@@ -19,3 +19,14 @@ class LogOutView(View):
     def get(self, request):
         logout(request)
         return HttpResponseRedirect(reverse('home_view'))
+
+
+class ProfileView(View):
+
+    template_name = 'users/profile.html'
+
+    def get(self, request):
+
+        if self.request.user.is_staff:
+            return render(request, 'users/staff_profile.html')
+        return render(request, self.template_name)

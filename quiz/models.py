@@ -26,3 +26,46 @@ class Standard(models.Model):
     school = models.ForeignKey(School)
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
+
+
+class Quiz(models.Model):
+
+    name = models.CharField(max_length=30)
+    starts = models.DateTimeField()
+    duration = models.TimeField()
+    created_on = models.DateTimeField(auto_now_add=True)
+    modified_on = models.DateTimeField(auto_now=True)
+
+
+class Question(models.Model):
+
+    question = models.CharField(max_length=200)
+    choice_a = models.CharField(max_length=50)
+    choice_b = models.CharField(max_length=50)
+    choice_c = models.CharField(max_length=50)
+    choice_d = models.CharField(max_length=50)
+    ans = models.TextField()
+    mark = models.IntegerField()
+    quiz = models.ManyToManyField(Quiz, related_name='quiz')
+    created_on = models.DateTimeField(auto_now_add=True)
+    modified_on = models.DateTimeField(auto_now=True)
+
+
+class Answer(models.Model):
+
+    quiz = models.ForeignKey(Quiz)
+    question = models.ForeignKey(Question)
+    status = models.BooleanField(max_length=50)
+    answer = models.TextField()
+    answered_by = models.ForeignKey(User)
+    created_on = models.DateTimeField(auto_now_add=True)
+    modified_on = models.DateTimeField(auto_now=True)
+
+
+class Score(models.Model):
+
+    score = models.IntegerField()
+    quiz = models.ForeignKey(Quiz)
+    owned_by = models.ForeignKey(User)
+    created_on = models.DateTimeField(auto_now_add=True)
+    modified_on = models.DateTimeField(auto_now=True)

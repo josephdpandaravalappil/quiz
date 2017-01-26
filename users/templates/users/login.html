@@ -8,7 +8,7 @@
 	<div class="container-fluid work" id="work" ng-controller="UserLoginController">
 		<div class="container">
 			<div class="row" id="starts">
-				<div class="col-md-12 col-sm-12 col-xs-12 work-list">
+				<div class="col-md-12 col-sm-12 col-xs-12 work-list no-padding">
 					<form class="form-signin"  method="post">{% csrf_token %}
 						<h4 class="text-center portfolio-text">Log In/Sign Up</h4>
 						<div class="alert alert-danger" id="fail">
@@ -23,13 +23,6 @@
 		                			<h3>Log In</h3>
 		                		</a>
 		                	</button>
-		                	{{ errors }}
-		                	{{user}}
-		                	<!-- {% if errors %}
-			                	<div class="fieldWrapper">
-								    {{ errors }}
-								</div>
-							{% endif %} -->
 						</div>
 					</form>
 					<form class="form-signup" method="post">{% csrf_token %}
@@ -59,8 +52,6 @@
 		                          <option value="">-- Select Your City --</option>
 		                        </select>
 							</div>
-<!-- 							<div class="col-md-8 col-sm-6 col-xs-12 work-space">
-							</div> -->
 							<div class="col-md-4 col-sm-6 col-xs-12 work-space">
 								<label>School</label>
 								<select class="form-control" ng-model="selectedSchool" 
@@ -68,8 +59,6 @@
 		                          <option value="">-- Select Your School --</option>
 		                        </select>
 							</div>
-<!-- 							<div class="col-md-8 col-sm-6 col-xs-12 work-space">
-							</div> -->
 							<div class="col-md-4 col-sm-6 col-xs-12 work-space">
 								<label>Standard</label>
 								<select class="form-control" ng-model="selectedStandard" 
