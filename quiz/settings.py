@@ -38,10 +38,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'import_export',
     'quiz',
     'api',
     'users',
-
 )
 
 MIDDLEWARE_CLASSES = (
