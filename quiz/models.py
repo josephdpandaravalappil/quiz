@@ -34,7 +34,7 @@ class Standard(models.Model):
     modified_on = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-       return self.name
+        return 'Std: ' + self.name + ', School: ' + self.school.name
 
 
 class Quiz(models.Model):

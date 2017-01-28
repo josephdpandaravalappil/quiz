@@ -335,6 +335,7 @@ quizApp.controller('QuizController', function ($scope, $http, $interval,
       $scope.scores = response;
       if(response.length > 0){
         // Already attended
+        $scope.error_msg = "Already attended the test";
         $("#fail").show();
           setTimeout(function () {
             $("#fail").hide();
@@ -342,7 +343,6 @@ quizApp.controller('QuizController', function ($scope, $http, $interval,
       }
       else{
         // Not attended
-        $scope.quiz_list = true;
         $scope.question_list = false;
         $scope.loading = true;
         $scope.quiz_name = quiz_name;
@@ -357,10 +357,21 @@ quizApp.controller('QuizController', function ($scope, $http, $interval,
            // when the response is available
           $scope.questions = response;
           $scope.index = 0;
-          if($scope.questions.length > 0)
+          if($scope.questions.length > 0){
+            $scope.quiz_list = true;
             $scope.set_questions(); 
-          else
+          }
+          else{
+            if(response.length < 1){
+              // No questions available
+              $scope.error_msg = "No questions available";
+              $("#fail").show();
+                setTimeout(function () {
+                  $("#fail").hide();
+                }, 3000);
+            }
             $scope.question_list = true;
+          }
         }).error(function(data, status, headers, config) {
            // called asynchronously if an error occurs
            // or server returns response with an error status.
