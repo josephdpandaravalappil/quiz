@@ -119,7 +119,6 @@ quizApp.controller('UserLoginController', function ($scope, $http, $interval,
   <!-- Signup -->
   $scope.signup = function (signup_data) {
     if(signup_data.name){
-      console.log($scope.selectedCity,123);
       if(!$scope.selectedCity || !$scope.selectedSchool ||!$scope.selectedStandard){
         $scope.error = "Please select your City, School and Standard in order";
         $("#fail").show();
@@ -169,7 +168,6 @@ quizApp.controller('UserLoginController', function ($scope, $http, $interval,
       "username": data.username,
       "password": data.password,
     }
-    console.log(dict_to_save);
     $http.post(
       '/api/users/login',
       dict_to_save
@@ -197,7 +195,7 @@ quizApp.controller('UserLoginController', function ($scope, $http, $interval,
 
 <!-- Quiz -->
 quizApp.controller('QuizController', function ($scope, $http, $interval, 
-  $window, AuthService, $cookieStore, $timeout) {
+  $window, AuthService, $cookieStore, $timeout, $filter) {
   $scope.quizes = new Array();
   $scope.questions = new Array();
   $scope.now = new Date(); 
@@ -208,11 +206,14 @@ quizApp.controller('QuizController', function ($scope, $http, $interval,
   $scope.user_type = 0;
   $scope.user_obj = JSON.parse(localStorage.getItem('user_obj'));
 
-  $scope.compareStarts = function (starts) {
+  $scope.compareStarts = function (starts, ends) {
     // compare current time with quiz starts time
     $scope.start_btn = false;
-    if($scope.now >= new Date(starts)){
+    if($scope.now >= new Date(starts) && $scope.now < new Date(ends)){
       $scope.start_btn = true;
+      // var _date = $filter('date')(new Date(5.30),
+                              // 'HH:mm:ss');
+      $scope.duration = (new Date(ends) - new Date(starts));
     }
   }
 
@@ -239,45 +240,64 @@ quizApp.controller('QuizController', function ($scope, $http, $interval,
 
   $scope.save_answer = function(){
     var status = false;
-    console.log("$scope.questions[$scope.index]",$scope.questions,$scope.index);
-    if($scope.choice == $scope.questions[$scope.index-1]['ans']){
-      status = true;
-      $scope.total_score = $scope.total_score + $scope.questions[$scope.index-1]['mark'];
-    }
-    var dict_to_save = {
-      "question": $scope.questions[$scope.index-1]['id'],
-      "quiz": $scope.quiz_id,
-      "status": status,
-      "answer": $scope.choice,
-      "answered_by": $scope.user_obj['id'],
-    }
-    $http.post(
-      '/api/users/'+$scope.user_obj['id']+'/quizes/'+$scope.questions[$scope.index-1]['id']+'/answers/',
-      dict_to_save
-    ).success(function(response){
-      if($scope.questions.length > 1)
+    if($scope.questions.length > $scope.index ){
+      if($scope.questions[$scope.index]['type'].toString() == 'm'){
+        if($scope.choice == $scope.questions[$scope.index]['ans']){
+          status = true;
+          $scope.total_score = $scope.total_score + $scope.questions[$scope.index]['mark'];
+        }
+      }
+      else{
+        var user_ans = angular.lowercase($scope.choice);
+        var ans = angular.lowercase($scope.questions[$scope.index]['ans']);
+        if(ans.indexOf(user_ans) !== -1){
+          status = true;
+          $scope.total_score = $scope.total_score + $scope.questions[$scope.index]['mark'];
+        }
+      }
+      var dict_to_save = {
+        "question": $scope.questions[$scope.index]['id'],
+        "quiz": $scope.quiz_id,
+        "status": status,
+        "answer": $scope.choice,
+        "answered_by": $scope.user_obj['id'],
+      }
+      $http.post(
+        '/api/users/'+$scope.user_obj['id']+'/quizes/'+$scope.questions[$scope.index]['id']+'/answers/',
+        dict_to_save
+      ).success(function(response){
+        $scope.index = $scope.index + 1;
         $scope.set_questions();
-        
-    }).error(function(data, headers, config) {
-     // called asynchronously if an error occurs
-     // or server returns response with an error status.
-    });
+          
+      }).error(function(data, headers, config) {
+       // called asynchronously if an error occurs
+       // or server returns response with an error status.
+      });
+    }
+    else{
+      $scope.set_questions();
+    }
   }
 
   $scope.set_questions = function() {
+      $scope.essay = false;
+      $scope.choice = "";
       if($scope.questions.length > $scope.index ){
         $scope.question = $scope.questions[$scope.index]['question'];
+        if($scope.questions[$scope.index]['type'].toString() == 'm'){
+        $scope.essay = true;
         $scope.choice_a = $scope.questions[$scope.index]['choice_a'];
         $scope.choice_b = $scope.questions[$scope.index]['choice_b'];
         $scope.choice_c = $scope.questions[$scope.index]['choice_c'];
         $scope.choice_d = $scope.questions[$scope.index]['choice_d'];
-        $scope.index = $scope.index+1;
+        }
         $scope.ans = "";
         $scope.btn_name = "Next";
-        if($scope.questions.length == $scope.index)
+        if($scope.questions.length == $scope.index+1)
           $scope.btn_name = "Finish";
       }
       else{
+        $scope.clear_queations = true;
         var dict_to_save = {
           "score": $scope.total_score,
           "quiz": $scope.quiz_id,
@@ -287,15 +307,16 @@ quizApp.controller('QuizController', function ($scope, $http, $interval,
           '/api/users/'+$scope.user_obj['id']+'/quizes/'+$scope.questions[$scope.index-1]['id']+'/score/',
           dict_to_save
         ).success(function(response){
-            
+          
         }).error(function(data, headers, config) {
          // called asynchronously if an error occurs
          // or server returns response with an error status.
         });
+        // $scope.question_list = true;
         $("#success").show();
           setTimeout(function () {
             $("#success").hide();
-            $window.location.href = '/users/profile/';
+            // $window.location.href = '/users/profile/';
         }, 3000);
 
       }
@@ -318,8 +339,8 @@ quizApp.controller('QuizController', function ($scope, $http, $interval,
        // when the response is available
       $scope.questions = response;
       $scope.index = 0;
-      if($scope.questions.length > 1)
-        $scope.set_questions();
+      if($scope.questions.length > 0)
+        $scope.set_questions(); 
       else
         $scope.question_list = true;
 
@@ -366,7 +387,6 @@ quizApp.controller('LeaderBoardController', function ($scope, $http, $interval,
 
   <!-- List scores of different users in scores order -->
   $scope.get_leader_board = function (city_id=0, school_id=0) {
-    console.log("city_id",city_id);
     $http.get(
     '/api/lboard/?city='+city_id+'&school='+school_id,
     {
@@ -376,7 +396,6 @@ quizApp.controller('LeaderBoardController', function ($scope, $http, $interval,
        // this callback will be called asynchronously
        // when the response is available
       $scope.results = response;
-      console.log($scope.results);
 
     }).error(function(data, status, headers, config) {
        // called asynchronously if an error occurs
@@ -442,7 +461,6 @@ quizApp.controller('StaffProfileController', function ($scope, $http, $interval,
        // this callback will be called asynchronously
        // when the response is available
       $scope.quizes = response;
-      console.log($scope.quizes);
 
     }).error(function(data, status, headers, config) {
        // called asynchronously if an error occurs

@@ -21,9 +21,11 @@ class ProfileSerializer(serializers.ModelSerializer):
     city_details = CitiesSerializer(source='city', read_only=True)
     school_details = CitiesSerializer(source='school', read_only=True)
     standard_details = CitiesSerializer(source='standard', read_only=True)
+
     class Meta:
         model = Profile
-        fields = ('id', 'name', 'city_details', 'school_details', 'standard_details')
+        fields = (
+            'id', 'name', 'city_details', 'school_details', 'standard_details')
 
 
 class SchoolSerializer(serializers.ModelSerializer):
@@ -44,7 +46,7 @@ class QuizSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Quiz
-        fields = ('id', 'name', 'starts', 'duration')
+        fields = ('id', 'name', 'starts', 'ends')
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -52,7 +54,7 @@ class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = ('id', 'question', 'choice_a', 'choice_b',
-                  'choice_c', 'choice_d', 'mark', 'ans')
+                  'choice_c', 'choice_d', 'mark', 'ans', 'type')
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -69,4 +71,5 @@ class ScoreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Score
-        fields = ('id', 'quiz', 'created_on', 'quiz_details', 'score', 'owned_by', 'user_details', 'profile_details')
+        fields = ('id', 'quiz', 'created_on', 'quiz_details',
+                  'score', 'owned_by', 'user_details', 'profile_details')

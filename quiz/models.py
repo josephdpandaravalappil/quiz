@@ -11,6 +11,9 @@ class City(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
 
+    def __unicode__(self):
+       return self.name
+
 
 class School(models.Model):
 
@@ -18,6 +21,9 @@ class School(models.Model):
     city = models.ForeignKey(City)
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+       return self.name
 
 
 class Standard(models.Model):
@@ -27,28 +33,43 @@ class Standard(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
 
+    def __unicode__(self):
+       return self.name
+
 
 class Quiz(models.Model):
 
     name = models.CharField(max_length=30)
     starts = models.DateTimeField()
-    duration = models.TimeField()
+    ends = models.DateTimeField()
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+       return self.name
 
 
 class Question(models.Model):
 
+    TYPE_CHOICES = (
+        ('e', 'Essay'),
+        ('m', 'Multiple Choice'),
+    )
+
     question = models.CharField(max_length=200)
-    choice_a = models.CharField(max_length=50)
-    choice_b = models.CharField(max_length=50)
-    choice_c = models.CharField(max_length=50)
-    choice_d = models.CharField(max_length=50)
+    choice_a = models.CharField(max_length=50, blank=True)
+    choice_b = models.CharField(max_length=50, blank=True)
+    choice_c = models.CharField(max_length=50, blank=True)
+    choice_d = models.CharField(max_length=50, blank=True)
+    type = models.CharField(max_length=1, choices=TYPE_CHOICES)
     ans = models.TextField()
     mark = models.IntegerField()
     quiz = models.ManyToManyField(Quiz, related_name='quiz')
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+       return 'Qus: ' + self.question + ', Ans: ' + self.ans
 
 
 class Answer(models.Model):
@@ -60,6 +81,9 @@ class Answer(models.Model):
     answered_by = models.ForeignKey(User)
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+       return self.quiz    
 
 
 class Score(models.Model):

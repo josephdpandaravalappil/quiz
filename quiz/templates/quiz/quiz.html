@@ -14,35 +14,41 @@
 
             <div ng-repeat="x in quizes ">
                <div class="col-md-4 col-sm-6 col-xs-12 work-space quiz-box">
-                  <a href="images/story1.png" data-lightbox="image-1">
-                     <h4 class="text-center">{[{x.name}]}</h4>
+                  <a href="#" >
+                  <h4 class="text-center">{[{x.name}]}</h4>
                   </a>
                   <label>Start on: </label> {[{ x.starts | date:'yyyy-MM-dd HH:mm:ss' }]}<br>
-                  <label>Duration: </label> {[{ x.duration }]}<br>
-                  {[{compareStarts(x.starts)}]}
+                  <label>Ends on: </label> {[{ x.ends | date:'yyyy-MM-dd HH:mm:ss' }]}<br>
+                  {[{compareStarts(x.starts , x.ends)}]}
+                  {[{duration | date:'HH:mm:ss' }]}
                   {% if not request.user.is_staff %}
                      <button type="button" class="btn btn-primary text-center" data-toggle="modal" data-target="#addContact" ng-click="start_test(x.id,x.name)" ng-show="start_btn"> Start</button>
                   {% endif %}
                </div>
             </div> 
-            
          </div>
 
          <div class="row" ng-hide="question_list">
-            <div class="alert alert-success" id="success">
-              <button class="close" data-dismiss="alert"></button>
-               Your test completed successfully.
-            </div>
             <div class="col-md-12 col-sm-12 col-xs-12 work-list">
                <h3> {[{quiz_name}]}</i></h3>
+               <div class="alert alert-success" id="success">
+                 <button class="close" data-dismiss="alert"></button>
+                  Your test completed successfully.
+               </div>
+               <label class="float-right">* Skipped Questions will be treated as incorrect answers</label>
             </div>
 
-            <div class="col-md-4 col-sm-6 col-xs-12 work-space quiz-box">
-               <h3><label>{[{index}]}. {[{question}]} </label> <br></h3>
-               <input type="radio" ng-model="choice" value={[{choice_a}]}>{[{choice_a}]}
-               <input type="radio" ng-model="choice" value={[{choice_b}]}>{[{choice_b}]}
-               <input type="radio" ng-model="choice" value={[{choice_c}]}>{[{choice_c}]}
-               <input type="radio" ng-model="choice" value={[{choice_d}]}>{[{choice_d}]}
+            <div class="col-md-6 col-sm-6 col-xs-12 work-space quiz-box" ng-hide="clear_queations">
+               <h3><label>{[{index + 1}]}. {[{question}]} </label> <br></h3>
+               <div ng-show="essay">
+                  <input type="radio"  ng-model="choice" value={[{choice_a}]}> {[{choice_a}]}
+                  <input type="radio"  ng-model="choice" value={[{choice_b}]}> {[{choice_b}]}
+                  <input type="radio"  ng-model="choice" value={[{choice_c}]}> {[{choice_c}]}
+                  <input type="radio"  ng-model="choice" value={[{choice_d}]}> {[{choice_d}]}
+               </div>
+               <div ng-hide="essay">
+                  <textarea rows="4" cols="50" ng-model="choice"> </textarea>
+               </div>
                <br>
                {% if not request.user.is_staff %}
                   <button type="button" style="float:right" class="btn btn-primary text-center" data-toggle="modal" ng-click=" save_answer()"> {[{btn_name}]}</button>
