@@ -111,3 +111,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 LOGIN_URL = '/users/login'
+STATIC_ROOT = os.path.join(BASE_DIR, '/quiz/static')
