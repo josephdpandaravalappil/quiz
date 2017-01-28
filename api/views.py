@@ -6,13 +6,14 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from quiz.pagination import CustomPagination
-from quiz.models import City, School, Standard, Quiz, Question, Score
+from quiz.models import City, School, Standard, Quiz, Question, Score, Answer
 from users.models import Profile
 from api.serializers import CitiesSerializer, SchoolSerializer, StandardSerializer
 from api.serializers import QuizSerializer, QuestionSerializer, AnswerSerializer
 from api.serializers import ScoreSerializer, ProfileSerializer
 from forms import UserCreationForm, UserProfileForm
 # Create your views here.
+
 
 #User Login
 class UserLoginView(CustomPagination):
@@ -160,13 +161,21 @@ class AnswerListView(CustomPagination):
 
 class ScoreView(CustomPagination):
     """
-    Get scores
+    Get, Create scores
     """
 
     authentication_classes = (BasicAuthentication, SessionAuthentication,)
     # Check permissions for read-only request
 
+    def get(self, request, u_id, q_id):
+        scores = Score.objects.filter(owned_by__id=u_id, quiz__id=q_id)
+        serializer = ScoreSerializer(scores, many=True)
+        return Response(serializer.data)
+
     def post(self, request, u_id, q_id):
+        # Remove all existing scores for the current quiz
+        Score.objects.filter(owned_by__id=u_id, quiz__id=q_id).delete()
+        # Save latest score for the quiz
         serializer = ScoreSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -177,7 +186,7 @@ class ScoreView(CustomPagination):
 
 class UserQuizListView(CustomPagination):
     """
-    Get given user attempted quizes
+    Get the user attended quizes
     """
 
     authentication_classes = (BasicAuthentication, SessionAuthentication,)
@@ -233,7 +242,7 @@ class SchoolListView(CustomPagination):
 
 class StaffQuizListView(CustomPagination):
     """
-    Get scores of student of the logged in staff
+    Get student' score of the loggedin staff
     """
 
     authentication_classes = (BasicAuthentication, SessionAuthentication,)
@@ -249,4 +258,19 @@ class StaffQuizListView(CustomPagination):
         for score in serializer.data:
             profile = ProfileSerializer(Profile.objects.filter(user=score['owned_by']), many=True)
             score.update({'profile_details': profile.data})
+        return Response(serializer.data)
+
+
+class QuizReviewListView(CustomPagination):
+    """
+    Get quiz review
+    """
+
+    authentication_classes = (BasicAuthentication, SessionAuthentication,)
+    # Check permissions for read-only request
+
+    def get(self, request, u_id, q_id):
+        # Get answers made by the user for the given quiz
+        quiz_answers = Answer.objects.filter(answered_by__id=u_id, quiz__id=q_id)
+        serializer = AnswerSerializer(quiz_answers, many=True)
         return Response(serializer.data)

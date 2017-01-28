@@ -1,0 +1,35 @@
+{% extends 'quiz/base.html' %}
+{% block head %}
+   {% load staticfiles %}
+{% endblock%}
+
+{% block body %}
+
+   <div class="container-fluid work" id="work" ng-controller="QuizReviewController">
+      <div class="container">
+         <div class="row" id="starts">
+            <div class="col-md-12 col-sm-12 col-xs-12 work-list">
+               <h3><i class="fa fa-question-circle"> Review answers</i></h3>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12 work-space quiz-box" ng-hide="clear_questions">
+               <h3><label>{[{index}]}. {[{question}]} </label> <br></h3>
+               <div ng-show="essay">
+                  <input type="radio"  ng-model="choice" value={[{choice_a}]}> {[{choice_a}]}
+                  <input type="radio"  ng-model="choice" value={[{choice_b}]}> {[{choice_b}]}
+                  <input type="radio"  ng-model="choice" value={[{choice_c}]}> {[{choice_c}]}
+                  <input type="radio"  ng-model="choice" value={[{choice_d}]}> {[{choice_d}]}
+               </div>
+               <br>
+               <label class="float-right">Your Answer: {[{user_ans}]}</label>
+               <h4 ng-show="status">Status: <i class="fa fa-check"></i></h4>
+               <h4 ng-hide="status">Status: <i class="fa fa-close"></i></h4>
+               {% if not request.user.is_staff %}
+                  <button type="button" style="float:right" class="btn btn-primary text-center" data-toggle="modal" ng-click="set_questions_answer()"> {[{btn_name}]}</button>
+               {% endif %}
+            </div>
+            
+         </div>
+      </div>
+   </div>
+{% endblock%}

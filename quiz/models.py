@@ -77,7 +77,7 @@ class Answer(models.Model):
     quiz = models.ForeignKey(Quiz)
     question = models.ForeignKey(Question)
     status = models.BooleanField(max_length=50)
-    answer = models.TextField()
+    answer = models.TextField(blank=True)
     answered_by = models.ForeignKey(User)
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)

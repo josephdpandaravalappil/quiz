@@ -58,10 +58,11 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class AnswerSerializer(serializers.ModelSerializer):
+    question_details = QuestionSerializer(source='question', read_only=True)
 
     class Meta:
         model = Answer
-        fields = ('id', 'question', 'quiz', 'status', 'answered_by', 'answer')
+        fields = ('id', 'question', 'quiz', 'status', 'answered_by', 'answer', 'question_details')
 
 
 class ScoreSerializer(serializers.ModelSerializer):
