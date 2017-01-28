@@ -22,7 +22,6 @@
                              <th class="text-center">Student name</th>
                              <th class="text-center">Test name</th>
                              <th class="text-center">Held On</th>
-                             <th class="text-center">Duration</th>
                              <th class="text-center">Your Score</th>
                            </tr>
                          </thead>
@@ -32,11 +31,10 @@
                                <td class="text-center">{[{ x.profile_details[0].name }]}</td>
                                <td class="text-center">{[{ x.quiz_details.name }]}</td>
                                <td class="text-center">{[{ x.quiz_details.starts | date:'yyyy-MM-dd HH:mm:ss'}]}</td>
-                               <td class="text-center">{[{ x.quiz_details.duration}]}</td>
                                <td class="text-center">{[{ x.score}]}</td>
                              </tr>
                              <tr ng-if="quizes.length==0">
-                               <td colspan="7">No tests attempted</td>
+                               <td colspan="7">No students taken the test</td>
                              </tr>
                            </tbody>
                        </table>

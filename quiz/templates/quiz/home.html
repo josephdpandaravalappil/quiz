@@ -41,7 +41,6 @@
                              <th class="text-center">School</th>
                              <th class="text-center">City</th>
                              <th class="text-center">Held On</th>
-                             <th class="text-center">Duration</th>
                              <th class="text-center">Score</th>
                            </tr>
                          </thead>
@@ -53,7 +52,6 @@
                                <td class="text-center">{[{ x.profile_details[0].school_details.name }]}</td>
                                <td class="text-center">{[{ x.profile_details[0].city_details.name }]}</td>
                                <td class="text-center">{[{ x.quiz_details.starts | date:'yyyy-MM-dd HH:mm:ss'}]}</td>
-                               <td class="text-center">{[{ x.quiz_details.duration}]}</td>
                                <td class="text-center">{[{ x.score}]}</td>
                              </tr>
                              <tr ng-if="results.length==0">

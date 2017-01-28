@@ -1,0 +1,5 @@
+id,question,choice_a,choice_b,choice_c,choice_d,type,ans,mark
+5000,Best laptop company,Thoshiba,HP,Lenovo,Acer,m,Thoshiba,10
+5001,Best keyboard,iball,HP,Lenovo,Logitech,m,iball,10
+5002,Best mouse company,iBall,HP,Lenovo,Dell,m,Dell,10
+5003,Write about thoshiba ,,,,,e,good interesting,20

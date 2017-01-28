@@ -21,9 +21,9 @@
                            <tr>
                              <th class="text-center">Sl.No.</th>
                              <th class="text-center">Test name</th>
-                             <th class="text-center">Held On</th>
+                             <th class="text-center">Starts From</th>
+                             <th class="text-center">Ends on</th>
                              <th class="text-center">Attended On</th>
-                             <th class="text-center">Duration</th>
                              <th class="text-center">Your Score</th>
                            </tr>
                          </thead>
@@ -32,9 +32,14 @@
                                <td class="text-center">{[{ $index+1 }]}</td>
                                <td class="text-center">{[{ x.quiz_details.name }]}</td>
                                <td class="text-center">{[{ x.quiz_details.starts | date:'yyyy-MM-dd HH:mm:ss'}]}</td>
+                               <td class="text-center">{[{ x.quiz_details.ends | date:'yyyy-MM-dd HH:mm:ss'}]}</td>
                                <td class="text-center">{[{ x.created_on | date:'yyyy-MM-dd HH:mm:ss'}]}</td>
-                               <td class="text-center">{[{ x.quiz_details.duration}]}</td>
                                <td class="text-center">{[{ x.score}]}</td>
+                               <td>
+                                 <a class="btn btn-warning" ng-href="/users/{[{x.owned_by}]}/quizes/{[{x.quiz}]}/review/" ng-click="review_quiz(x.quiz)">
+                                   <i class="fa fa-pencil-square-o" title="Review" aria-hidden="true"> Review Answers</i>
+                                 </a>
+                               </td>
                              </tr>
                              <tr ng-if="quizes.length==0">
                                <td colspan="7">No tests attempted</td>

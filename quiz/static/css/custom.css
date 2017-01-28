@@ -7,3 +7,7 @@
 .no-padding{
 	padding: 0px !important;
 }
+
+.float-right{
+	float: right;
+}
